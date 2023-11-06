@@ -27,7 +27,7 @@ start_buttons = [
     types.KeyboardButton('О нас'),
     types.KeyboardButton('Курсы'),
     types.KeyboardButton('Контакты'),
-    types.KeyboardButton('Адрес'),
+    types.KeyboardButton('Адрес')
 ]
 start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True).add(*start_buttons)
 
