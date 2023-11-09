@@ -13,8 +13,7 @@ basicConfig(level=INFO)
 
 connection = sqlite3.connect('users.db')
 cursor = connection.cursor()
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
+cursor.execute("""CREATE TABLE IF NOT EXISTS users (
     id INTEGER,
     username VARCHAR(255),
     first_name VARCHAR(255),
