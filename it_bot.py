@@ -26,7 +26,8 @@ start_buttons = [
     types.KeyboardButton('О нас'),
     types.KeyboardButton('Курсы'),
     types.KeyboardButton('Контакты'),
-    types.KeyboardButton('Адрес')
+    types.KeyboardButton('Адрес'),
+    types.KeyboardButton('Записаться')
 ]
 start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True).add(*start_buttons)
 
@@ -120,6 +121,44 @@ async def send_mailing(message:types.Message, state:FSMContext):
         await bot.send_message(i[0], message.text)
         await message.answer("Рассылка окончена")
         await state.finish()
+
+class SingUpState(StatesGroup):
+    first_name = State()
+    last_name = State()
+    phone = State()
+    direction = State()
+
+@dp.message_handler(text="Записаться")
+async def sign_courses(message:types.Message):
+    await message.reply(f"{message.from_user.full_name}, для того чтобы записаться на курсы нужно заполнить следующие поля:\n(Имя,Фамилия,Номер,Направление)")
+    await message.answer("Введите свое имя:")
+    await SingUpState.first_name.set()
+
+@dp.message_handler(state=SingUpState.first_name)
+async def get_last_name(message:types.Message, state:FSMContext):
+    await state.update_data(first_name=message.text)
+    await message.answer("Введите фамилию:")
+    await SingUpState.last_name.set()
+
+@dp.message_handler(state=SingUpState.last_name)
+async def get_phone_number(message:types.Message, state:FSMContext):
+    await state.update_data(last_name=message.text)
+    await message.answer("Введите свой номер телефона: ")
+    await SingUpState.phone.set()
+
+@dp.message_handler(state=SingUpState.phone)
+async def get_direction(message:types.Message, state:FSMContext):
+    await state.update_data(phone=message.text)
+    await message.answer("Какое направлние вас интересует?")
+    await SingUpState.direction.set()
+
+@dp.message_handler(state=SingUpState.direction)
+async def get_all_fields_send_signup(message:types.Message, state:FSMContext):
+    await state.update_data(direction=message.text)
+    result = await storage.get_data(user=message.from_user.id)
+    print(result)
+    await bot.send_message(-4091924505, f"Заявка на записьЖ\n{result['first_name']},\n{result['last_name']}\n{result['phone']},\n{result['direction']}")
+    await message.answer("Ваши данные записаные ожидайте....")
 
 @dp.message_handler()
 async def not_found(message:types.Message):
