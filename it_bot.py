@@ -27,7 +27,9 @@ start_buttons = [
     types.KeyboardButton('Курсы'),
     types.KeyboardButton('Контакты'),
     types.KeyboardButton('Адрес'),
-    types.KeyboardButton('Записаться')
+    types.KeyboardButton('Записаться'),
+    types.KeyboardButton('Отправить номер', request_contact=True),
+    types.KeyboardButton('Отправить локацию', request_location=True)
 ]
 start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True).add(*start_buttons)
 
@@ -159,6 +161,15 @@ async def get_all_fields_send_signup(message:types.Message, state:FSMContext):
     print(result)
     await bot.send_message(-4091924505, f"Заявка на записьЖ\n{result['first_name']},\n{result['last_name']}\n{result['phone']},\n{result['direction']}")
     await message.answer("Ваши данные записаные ожидайте....")
+
+
+@dp.message_handler(content_types=types.ContentType.CONTACT)
+async def get_contact(message:types.Message):
+    await message.answer(f"{message.contact.phone_number}")
+
+@dp.message_handler(content_types=types.ContentType.LOCATION)
+async def get_location(message:types.Message):
+    await message.answer(f"{message.location}")
 
 @dp.message_handler()
 async def not_found(message:types.Message):
