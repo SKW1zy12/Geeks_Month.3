@@ -1,19 +1,19 @@
 from bs4 import BeautifulSoup
 import requests 
 
-def parsing_akipress():
-    url = 'https://akipress.org/'
-    response = requests.get(url=url)
-    print(response)
-    soup = BeautifulSoup (response.text, 'lxml')
-    all_news = soup.find_all('a', class_="newslink")
-    n = 0
-    for news in all_news:
-        n += 1
+# def parsing_akipress():
+#     url = 'https://akipress.org/'
+#     response = requests.get(url=url)
+#     print(response)
+#     soup = BeautifulSoup (response.text, 'lxml')
+#     all_news = soup.find_all('a', class_="newslink")
+#     n = 0
+#     for news in all_news:
+#         n += 1
     
-        print(f"{n}) {news.text}")
-        with open ('news.text', 'a+', encoding='UTF-8') as news_text:
-            news_text.write(f"{n}) {news.text}\n")
+#         print(f"{n}) {news.text}")
+#         with open ('news.text', 'a+', encoding='UTF-8') as news_text:
+#             news_text.write(f"{n}) {news.text}\n")
 
 # parsing_akipress()
 

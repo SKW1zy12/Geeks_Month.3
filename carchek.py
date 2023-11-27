@@ -30,7 +30,7 @@ insert = [
     ("Н543ЖУ", "Kia", "Optima", "2020"),
     ("Р210ЮК", "Nissan", "Altima", "2019"),
 ]
-cursor.executemany("""INSERT INTO users ("NUMBER", "MARK", "MODEL", "YEAR") VALUES (?, ?, ?, ?)""", insert)
+cursor.execute("""INSERT INTO users ("NUMBER", "MARK", "MODEL", "YEAR") VALUES (?, ?, ?, ?)""", insert)
 
 connect.commit()
 
@@ -48,7 +48,7 @@ async def process_number(message: types.Message):
     result = cursor.fetchone()
 
     if result:
-        await message.answer(f"Информация о машине: {result}")
+        await message.answer(f"Информация о машине:{result}")
     else:
         await message.answer("Нет информации по указанному номеру.")
 
