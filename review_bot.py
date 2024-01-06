@@ -64,4 +64,5 @@ async def send_message_group(message:types.Message, state:FSMContext):
     await bot.send_message(chat_id= -4037053389, text=message.text)
     await message.answer("Отпрввил сообщение")
     await state.finish()
+    
 executor.start_polling(dp, skip_updates=True)
